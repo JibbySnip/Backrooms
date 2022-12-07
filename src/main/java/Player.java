@@ -6,10 +6,12 @@ import java.awt.image.BufferedImage;
 public class Player {
     private Point2D pos = new Point2D.Double(-1, -1);
     private double velX, velY;
-    public static final double BOUND_X = 1, BOUND_Y = 1;
-    public static final int VEL_MAX=1;
-    private static final int COLLISION_SUBELEMS = 2;
-    private static final int PLAYER_RENDER_SIZE = 10;
+
+    public static final double BOUND_X = 0.8, BOUND_Y = 0.8;
+    public static final double VEL_MAX=0.6;
+    private static final int COLLISION_SUBELEMS = 5;
+    private static final int PLAYER_SIZE = 8;
+    private static final int PLAYER_RENDER_SIZE = PLAYER_SIZE*Tile.TILE_DIM / 8;
     private Level level;
     private BufferedImage playerTexture;
 
@@ -69,9 +71,9 @@ public class Player {
         this.pos = new Point2D.Double(l.spawnX, l.spawnY);
     }
 
-    public void setLevel(Level l, int posX, int posY) {
+    public void setLevel(Level l, Point2D pos) {
         this.level = l;
-        this.pos = new Point2D.Double(posX, posY);
+        this.pos = pos;
     }
 
     public BufferedImage getTexture() {
@@ -116,8 +118,8 @@ public class Player {
     public void draw(Graphics g, double x, double y) {
 //        g.drawImage(playerTexture, (int) dxPx-5, (int) dyPx-5, null);
         g.fillOval(
-                (int) x - PLAYER_RENDER_SIZE/2,
-                (int) y - PLAYER_RENDER_SIZE/2,
+                (int) x - PLAYER_RENDER_SIZE/2 - 1,
+                (int) y - PLAYER_RENDER_SIZE/2 - 1,
                 PLAYER_RENDER_SIZE,
                 PLAYER_RENDER_SIZE);
     }

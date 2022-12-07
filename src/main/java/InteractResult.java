@@ -1,2 +1,2 @@
-public record InteractResult(int shekelsGained, int exitTaken) {
+public record InteractResult(int shekelsGained, NullableGraph.NullableEdge exitTaken, NullableGraph.Vertex originRoom) {
 }
