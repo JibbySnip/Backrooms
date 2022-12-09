@@ -12,7 +12,7 @@ public class TileImpl implements Tile{
     public boolean canCollide;
     private static final InteractResult nothing = new InteractResult(0, null, null);
     public static Tile voidTile = new TileImpl(makeSolidImage(Color.BLACK), true);
-    public static Tile floorTile = new TileImpl(makeSolidImage(Color.lightGray), false);
+    public static Tile floorTile = new TileImpl("resources/stone.png", false);
     public static Tile exitTile = new TileImpl(
             "resources/trapdoor.png",
             false);

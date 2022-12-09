@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/NullableGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/BackroomsGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BackroomsGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/InteractResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/InteractResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MutableGraph.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NullableGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NullableGraph.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Tile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TileImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TileImpl.java" afterDir="false" />
@@ -52,6 +54,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "openjdk-17",
     "node.js.detected.package.eslint": "true",
@@ -61,7 +64,8 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.sourceCode",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -135,11 +139,6 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="6" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/GamePanel.java</url>
-          <line>88</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 
 public interface Tile {
 
-    public static final int TILE_DIM = 32;
+    int TILE_DIM = 32;
 
     /**
      * Gets the position of the tile within the level

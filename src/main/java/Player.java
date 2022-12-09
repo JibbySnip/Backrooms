@@ -61,8 +61,8 @@ public class Player {
 
     private void transformPos(double dx, double dy) {
         this.pos = new Point2D.Double(
-                pos.getX()+dx,
-                pos.getY()+dy
+                this.pos.getX()+dx,
+                this.pos.getY()+dy
         );
     }
 

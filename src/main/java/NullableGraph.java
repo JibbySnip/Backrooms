@@ -3,7 +3,7 @@ import java.util.random.RandomGenerator;
 
 public class NullableGraph {
     private final Set<Vertex> vertices = new HashSet<>();
-    private final Set<NullableEdge> edges = new HashSet<>();
+    private final List<NullableEdge> edges = new ArrayList<>();
     private final List<NullableEdge> freeEdges = new ArrayList<>();
     private final RandomGenerator ng;
 
@@ -11,7 +11,7 @@ public class NullableGraph {
         this.ng = ng;
     }
 
-    public void add(Vertex v) {
+    private void add(Vertex v) {
         if (vertices.contains(v)) {
             throw new IllegalArgumentException("This vertex is already in the graph");
         }
@@ -37,35 +37,43 @@ public class NullableGraph {
     }
 
     public NullableEdge findNullEdge(NullableEdge e1) {
-        NullableEdge e = null;
-        if (!hasFreeEdges()) {
+        List<NullableEdge> nonEqualNullEdges = new ArrayList<>();
+        for (NullableEdge e : freeEdges) {
+            if (e1.v1 != e.v1) {
+                nonEqualNullEdges.add(e);
+            }
+        }
+        if (nonEqualNullEdges.size() == 0) {
             return null;
+        } else {
+            return pickRandom(nonEqualNullEdges);
         }
-        while (e == null || e1.shareEnd(e)) {
-            e = findNullEdge();
-        }
-        return e;
-    }
-
-    public boolean hasFreeEdges() {
-        return freeEdges.size() > 1;
     }
 
     public NullableEdge findNullEdge() {
-        return freeEdges.get(ng.nextInt(0, freeEdges.size()));
+        return pickRandom(freeEdges);
+    }
+
+    private NullableEdge pickRandom(List<NullableEdge> es) {
+        return es.get(ng.nextInt(0, es.size()));
+    }
+
+    public int freeEdgeCount() {
+        return freeEdges.size();
     }
 
     static class Vertex {
         public Set<NullableEdge> edges = new HashSet<>();
-        private NullableGraph graph;
+        private final NullableGraph graph;
 
         public Vertex(NullableGraph g) {
             this.graph = g;
+            g.add(this);
         }
 
         public NullableEdge addEdge() {
             NullableEdge e = new NullableEdge(this);
-            edges.add(e);
+            this.edges.add(e);
             graph.edges.add(e);
             graph.freeEdges.add(e);
             return e;
@@ -74,6 +82,7 @@ public class NullableGraph {
         public NullableEdge addEdge(Vertex v) {
             NullableEdge e = new NullableEdge(this, v);
             edges.add(e);
+            graph.edges.add(e);
             return e;
         }
     }

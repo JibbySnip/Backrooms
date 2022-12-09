@@ -49,7 +49,7 @@ public class BackroomsGame implements Runnable {
     }
 
     class InstructionPanel extends JComponent {
-
+        // ceditor,
     }
 
     public static void main(String[] args) {
