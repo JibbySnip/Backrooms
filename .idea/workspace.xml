@@ -7,11 +7,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+    <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Inter-room travel complete">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/closedChest.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/exit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/openChest.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/openTrapdoor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/player1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/player2.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/stone.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/stone.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/trapdoor.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/trapdoor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/wood.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/wood.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/BackroomsGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BackroomsGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/InteractResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/InteractResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NullableGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NullableGraph.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Player.java" afterDir="false" />
@@ -45,6 +55,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2IKRYwJ8MclL4m1xmOnHwb7OqaD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -57,6 +70,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "openjdk-17",
+    "last_opened_file_path": "/Users/lilybrenner/Code/CIS 1200/Backrooms/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -75,7 +89,12 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources" />
       <recent name="D:\Programs\Coursework\CIS 1200\Backrooms" />
       <recent name="D:\Programs\Coursework\CIS 1200\Backrooms\src" />
     </key>
@@ -116,6 +135,14 @@
       <workItem from="1670375374027" duration="1735000" />
       <workItem from="1670378226698" duration="11408000" />
     </task>
+    <task id="LOCAL-00001" summary="Inter-room travel complete">
+      <created>1670559339898</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1670559339898</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +159,10 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Inter-room travel complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inter-room travel complete" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -139,6 +170,15 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="6" />
         </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.ConcurrentModificationException" package="java.util" />
+          <option name="timeStamp" value="55" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Level.java</url>
+          <line>267</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

@@ -14,8 +14,12 @@ public class GamePanel extends JComponent {
     private Level currLevel;
     private NullableGraph levels;
     private boolean playing = false;
-    private boolean transitioning = false;
+    private int nShekels = 1;
 
+    private int shekelsAvailableInComplex = 0;
+
+    private boolean gameWon = false;
+    private boolean gameLost = false;
     public GamePanel() {
 
 
@@ -30,6 +34,7 @@ public class GamePanel extends JComponent {
                     case KeyEvent.VK_UP, KeyEvent.VK_W -> p.setVelY(-Player.VEL_MAX);
                     case KeyEvent.VK_DOWN, KeyEvent.VK_S -> p.setVelY(Player.VEL_MAX);
                     case KeyEvent.VK_SPACE -> interact();
+//                    case KeyEvent.VK_P -> changeLevelDebug();
                 }
             }
 
@@ -68,6 +73,7 @@ public class GamePanel extends JComponent {
 
     public Level newLevel() {
         Level nLevel = new Level(r, levels);
+        shekelsAvailableInComplex += nLevel.shekelsAvailable();
         return nLevel;
     }
 
@@ -76,20 +82,30 @@ public class GamePanel extends JComponent {
                 [(int) Math.floor(p.getPos().getY())]
                 [(int) Math.floor(p.getPos().getX())];
 
+        if (nShekels + t.shekelCount() < 0) {
+            return;
+        }
         InteractResult i = t.interact();
-        // TODO: 12/6/2022 add shekels
         // TODO: 12/6/2022 Add soft lock protection
-        transitioning = true;
-        System.out.println("interacting...");
+//        System.out.println("interacting...");
+
+        nShekels += i.shekelsGained();
+        if (i.shekelsGained() > 0) {
+            shekelsAvailableInComplex -= i.shekelsGained();
+        }
+        if (i.gameOver()) {
+            gameWon = true;
+        }
+
         if (i.exitTaken() != null) {
-            System.out.println("Found an exit");
+//            System.out.println("Found an exit");
             if (i.exitTaken().hasNullEnd()) {
                 NullableGraph.NullableEdge nextL = levels.findNullEdge(i.exitTaken());
                 if (
                         nextL == null ||
                         levels.freeEdgeCount() < 3 ||
-                        r.nextDouble(0, 1) > (1 - Level.NEW_EXIT_PROB*levels.freeEdgeCount()
-                    )) { //
+                        r.nextDouble(0, 1) > Level.NEW_EXIT_PROB*levels.freeEdgeCount()
+                    ) { //
                     // Make a new room with an exit
                     Level l = newLevel();
                     NullableGraph.NullableEdge e0 = l.getRandomUnassignedEdge();
@@ -97,7 +113,7 @@ public class GamePanel extends JComponent {
                     currLevel = l;
                 } else {
                     // Connect to an existing room
-                    NullableGraph.NullableEdge e = levels.mergeEdges(i.exitTaken(), nextL); // TODO: 12/7/2022 make the self-loop edges thing work
+                    NullableGraph.NullableEdge e = levels.mergeEdges(i.exitTaken(), nextL);
                     ((Level) e.oppositeEnd(i.originRoom())).reassignEdge(nextL, e);
                     currLevel = (Level) e.oppositeEnd(i.originRoom());
 
@@ -134,53 +150,76 @@ public class GamePanel extends JComponent {
 
 
         }
-        transitioning = false;
+        if (nShekels + shekelsAvailableInComplex <= 0 && !currLevel.hasFinalExit) {
+            gameLost = true;
+        }
+    }
+
+    private void changeLevelDebug() {
+        currLevel = newLevel();
+        p.setLevel(currLevel);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        int posPxX = (int) Math.round(p.getPos().getX() * Tile.TILE_DIM);
-        int posPxY = (int) Math.round(p.getPos().getY() * Tile.TILE_DIM);
+        if (gameLost) {
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.BLACK);
+            g.drawString("YOU RAN OUT OF SHEKELS... YOU LOSE!", getWidth()/2-64, getHeight()/2);
 
-        Dimension viewportSize = this.getSize();
-        double dxPx = (viewportSize.getWidth() / 2);
-        double dyPx = (viewportSize.getHeight() / 2);
+        } else if (gameWon) {
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.BLACK);
+            g.drawString("YOU WIN!", getWidth()/2-44, getHeight()/2);
+        } else {
+            int posPxX = (int) Math.round(p.getPos().getX() * Tile.TILE_DIM);
+            int posPxY = (int) Math.round(p.getPos().getY() * Tile.TILE_DIM);
 
-        int xMin = (int) Math.floor((posPxX - dxPx) / Tile.TILE_DIM);
-        int xMax = (int) Math.ceil((posPxX + dxPx) / Tile.TILE_DIM);
-        int yMin = (int) Math.floor((posPxY - dyPx) / Tile.TILE_DIM);
-        int yMax = (int) Math.ceil((posPxY + dyPx) / Tile.TILE_DIM);
-        if (currLevel != null) {
-            Tile[][] tileMap = currLevel.getTileMap();
-            BufferedImage b = new BufferedImage(viewportSize.width, viewportSize.height, BufferedImage.TYPE_INT_RGB);
-            // Iterating over tile coordinates in tileMap
-            for (int i = yMin; i < yMax; i++) {
-                for (int j = xMin; j < xMax; j++) {
-                    Tile tileToFill;
-                    if (currLevel.outOfBounds(j, i)) {
-                        tileToFill = TileImpl.voidTile;
-                    } else {
-                        tileToFill = tileMap[i][j];
-                    }
-                    for (int x = 0; x < Tile.TILE_DIM; x++) {
-                        for (int y = 0; y < Tile.TILE_DIM; y++) {
-                            int pixelCoordX = j * Tile.TILE_DIM - (int) Math.floor(posPxX - dxPx) + x;
-                            int pixelCoordY = i * Tile.TILE_DIM - (int) Math.floor(posPxY - dyPx) + y;
-                            //                        if (Math.abs(posPxX - pixelCoordX) <= dxPx && Math.abs(posPxY - pixelCoordY) <= dyPx) {
-                            if (pixelCoordX > 0 && pixelCoordX < getWidth() && pixelCoordY > 0 && pixelCoordY < getHeight()) {
-                                b.setRGB(
-                                        pixelCoordX,
-                                        pixelCoordY,
-                                        tileToFill.getGraphics().getRGB(x, y));
+            Dimension viewportSize = this.getSize();
+            double dxPx = (viewportSize.getWidth() / 2);
+            double dyPx = (viewportSize.getHeight() / 2);
+
+            int xMin = (int) Math.floor((posPxX - dxPx) / Tile.TILE_DIM);
+            int xMax = (int) Math.ceil((posPxX + dxPx) / Tile.TILE_DIM);
+            int yMin = (int) Math.floor((posPxY - dyPx) / Tile.TILE_DIM);
+            int yMax = (int) Math.ceil((posPxY + dyPx) / Tile.TILE_DIM);
+            if (currLevel != null) {
+                Tile[][] tileMap = currLevel.getTileMap();
+                BufferedImage b = new BufferedImage(viewportSize.width, viewportSize.height, BufferedImage.TYPE_INT_RGB);
+                // Iterating over tile coordinates in tileMap
+                for (int i = yMin; i < yMax; i++) {
+                    for (int j = xMin; j < xMax; j++) {
+                        Tile tileToFill;
+                        if (Level.outOfBounds(tileMap, j, i)) {
+                            tileToFill = TileImpl.voidTile;
+                        } else {
+                            tileToFill = tileMap[i][j];
+                        }
+                        for (int x = 0; x < Tile.TILE_DIM; x++) {
+                            for (int y = 0; y < Tile.TILE_DIM; y++) {
+                                int pixelCoordX = j * Tile.TILE_DIM - (int) Math.floor(posPxX - dxPx) + x;
+                                int pixelCoordY = i * Tile.TILE_DIM - (int) Math.floor(posPxY - dyPx) + y;
+                                //                        if (Math.abs(posPxX - pixelCoordX) <= dxPx && Math.abs(posPxY - pixelCoordY) <= dyPx) {
+                                if (pixelCoordX > 0 && pixelCoordX < getWidth() && pixelCoordY > 0 && pixelCoordY < getHeight()) {
+                                    b.setRGB(
+                                            pixelCoordX,
+                                            pixelCoordY,
+                                            tileToFill.getGraphics().getRGB(x, y));
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            g.setColor(Color.BLACK);
-            g.drawImage(b, 0, 0, this);
-            p.draw(g, dxPx, dyPx);
+                g.setColor(Color.BLACK);
+                g.drawImage(b, 0, 0, this);
+                p.draw(g, dxPx, dyPx);
+                g.setFont(g.getFont().deriveFont(30.0F));
+                g.setColor(Color.YELLOW);
+                g.drawString("Shekels: "+ nShekels, 10, 30);
+            }
         }
 
 //        debugImage(g);

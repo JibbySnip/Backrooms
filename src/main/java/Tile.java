@@ -14,6 +14,9 @@ public interface Tile {
 
     InteractResult interact();
 
+    NullableGraph.NullableEdge exitTaken();
+    int shekelCount();
+
     boolean canCollide();
 
 }

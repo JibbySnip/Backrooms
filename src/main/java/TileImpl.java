@@ -8,17 +8,26 @@ import java.io.IOException;
 public class TileImpl implements Tile{
     private BufferedImage texture;
     private int w, h;
-    private InteractResult interact;
+    InteractResult interact;
     public boolean canCollide;
-    private static final InteractResult nothing = new InteractResult(0, null, null);
+    private static final InteractResult nothing = new InteractResult(0, null, null, false);
     public static Tile voidTile = new TileImpl(makeSolidImage(Color.BLACK), true);
-    public static Tile floorTile = new TileImpl("resources/stone.png", false);
-    public static Tile exitTile = new TileImpl(
-            "resources/trapdoor.png",
-            false);
+    public static Tile stoneTile = new TileImpl("resources/stone.png", false);
     public static Tile woodTile = new TileImpl(
             "resources/wood.png",
             false);
+
+    public static Tile exitTile = new TileImpl(
+            "resources/exit.png",
+            new InteractResult(0, null, null, true),
+            false
+    );
+
+    private final static Tile openChestTile = new TileImpl("resources/openChest.png",
+            false);
+
+    private static final Tile unlockedTrapdoor = new TileImpl("resources/openTrapdoor.png", false);
+
 
     public TileImpl(BufferedImage texture, InteractResult interact, boolean canCollide) {
         init(texture, interact, canCollide);
@@ -38,12 +47,12 @@ public class TileImpl implements Tile{
         }
     }
 
-    public TileImpl(String filePath, InteractResult interact, boolean canCollide) throws FileNotFoundException {
+    public TileImpl(String filePath, InteractResult interact, boolean canCollide) {
         try {
             BufferedImage i = ImageIO.read(new File(filePath));
             init(i, interact, canCollide);
         } catch (IOException e) {
-            throw new FileNotFoundException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -78,10 +87,21 @@ public class TileImpl implements Tile{
     }
 
     @Override
+    public NullableGraph.NullableEdge exitTaken() {
+        return this.interact.exitTaken();
+    }
+
+    @Override
+    public int shekelCount() {
+        return interact.shekelsGained();
+    }
+
+
+    @Override
     public InteractResult interact() {
-        InteractResult t = interact;
-        interact = new InteractResult(0, t.exitTaken(), t.originRoom());
-        return t;
+//        InteractResult t = interact;
+//        interact = new InteractResult(0, t.exitTaken(), t.originRoom());
+        return interact;
     }
 
     private static BufferedImage makeSolidImage(Color c) {
@@ -94,6 +114,60 @@ public class TileImpl implements Tile{
 
     public boolean canCollide() {
         return canCollide;
+    }
+
+    public static Tile makeChestTile(int numShekels) {
+        return new TileImpl(
+                "resources/closedChest.png",
+                new InteractResult(1, null, null, false),
+                false) {
+            private boolean isOpen = false;
+            @Override
+            public BufferedImage getGraphics() {
+                if (isOpen) {
+                    return openChestTile.getGraphics();
+                } else {
+                    return super.getGraphics();
+                }
+            }
+
+            @Override
+            public InteractResult interact() {
+                isOpen = true;
+                InteractResult i = this.interact;
+                this.interact = new InteractResult(0, null, null, false);
+                return i;
+
+            }
+
+        };
+    }
+
+    public static Tile getDoorTile(NullableGraph.NullableEdge e, NullableGraph.Vertex v) {
+        return new TileImpl(
+                "resources/trapdoor.png",
+                new InteractResult(-1, e, v, false),
+                false) {
+            private boolean isLocked = true;
+            @Override
+            public BufferedImage getGraphics() {
+                if (isLocked) {
+                    return super.getGraphics();
+                } else {
+                    return unlockedTrapdoor.getGraphics();
+                }
+            }
+
+            @Override
+            public InteractResult interact() {
+                isLocked = false;
+                InteractResult temp = super.interact();
+                this.interact = new InteractResult(
+                        0, e, v, false
+                );
+                return temp;
+            }
+        };
     }
 
 }

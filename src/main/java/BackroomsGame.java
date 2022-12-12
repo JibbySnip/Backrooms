@@ -24,9 +24,9 @@ public class BackroomsGame implements Runnable {
                     instrShown.set(true);
                     JFrame instrFrame = new JFrame("Instructions");
                     instrFrame.add(new InstructionPanel());
-                    frame.pack();
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.addWindowListener(new WindowAdapter() {
+                    instrFrame.pack();
+                    instrFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    instrFrame.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
                             super.windowClosed(e);
@@ -34,7 +34,7 @@ public class BackroomsGame implements Runnable {
                         }
                     });
 
-                    frame.setVisible(true);
+                    instrFrame.setVisible(true);
                 }
             }
         );
@@ -49,7 +49,12 @@ public class BackroomsGame implements Runnable {
     }
 
     class InstructionPanel extends JComponent {
-        // ceditor,
+        public InstructionPanel() {
+            setLayout(new GridLayout());
+            JLabel title = new JLabel("Welcome to the Backrooms");
+            title.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 24));
+//            add(title, )
+        }
     }
 
     public static void main(String[] args) {

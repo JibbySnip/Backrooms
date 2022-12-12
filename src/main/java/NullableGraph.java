@@ -3,8 +3,8 @@ import java.util.random.RandomGenerator;
 
 public class NullableGraph {
     private final Set<Vertex> vertices = new HashSet<>();
-    private final List<NullableEdge> edges = new ArrayList<>();
-    private final List<NullableEdge> freeEdges = new ArrayList<>();
+    private final List<NullableEdge> edges = new LinkedList<>();
+    private final List<NullableEdge> freeEdges = new LinkedList<>();
     private final RandomGenerator ng;
 
     public NullableGraph(RandomGenerator ng) {
@@ -64,7 +64,7 @@ public class NullableGraph {
 
     static class Vertex {
         public Set<NullableEdge> edges = new HashSet<>();
-        private final NullableGraph graph;
+        final NullableGraph graph;
 
         public Vertex(NullableGraph g) {
             this.graph = g;

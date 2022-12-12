@@ -1,7 +1,11 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Player {
     private Point2D pos = new Point2D.Double(-1, -1);
@@ -10,10 +14,40 @@ public class Player {
     public static final double BOUND_X = 0.8, BOUND_Y = 0.8;
     public static final double VEL_MAX=0.6;
     private static final int COLLISION_SUBELEMS = 5;
-    private static final int PLAYER_SIZE = 8;
-    private static final int PLAYER_RENDER_SIZE = PLAYER_SIZE*Tile.TILE_DIM / 8;
     private Level level;
-    private BufferedImage playerTexture;
+    private int animCount = 0;
+
+    private int animCycle = 8;
+    private int dir = -1;
+    private final BufferedImage playerTextureLeft1,playerTextureLeft2,playerTextureRight1,playerTextureRight2;
+
+    public Player() {
+        try {
+            playerTextureLeft1 = ImageIO.read(new File("resources/player1.png"));
+            playerTextureLeft2 = ImageIO.read(new File("resources/player2.png"));
+            playerTextureRight1 = flipImg(playerTextureLeft1);
+
+            playerTextureRight2 = flipImg(playerTextureLeft2);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private BufferedImage flipImg(BufferedImage i) {
+        AffineTransform flip = new AffineTransform();
+        flip.concatenate(AffineTransform.getScaleInstance(-1, 1));
+        flip.concatenate(AffineTransform.getTranslateInstance(-playerTextureLeft1.getWidth(), 0));
+
+        BufferedImage img = new BufferedImage(
+                i.getWidth(),
+                i.getHeight(),
+                BufferedImage.TYPE_INT_ARGB
+        );
+        Graphics2D g = img.createGraphics();
+        g.transform(flip);
+        g.drawImage(i, 0,0, null);
+        return img;
+    }
 
     /**
      * This uses a little heuristic algorithm collision thing I came up with. Basically, if
@@ -77,7 +111,23 @@ public class Player {
     }
 
     public BufferedImage getTexture() {
-        return playerTexture;
+        animCount++;
+        if (velX == 0 && velY == 0 || animCount == animCycle) {
+            animCount = 0;
+        }
+        if (animCount % animCycle > animCycle/2 || animCount % animCycle == 0) {
+            if (dir < 0) {
+                return playerTextureLeft1;
+            } else {
+                return playerTextureRight1;
+            }
+        } else {
+            if (dir < 0) {
+                return playerTextureLeft2;
+            } else {
+                return playerTextureRight2;
+            }
+        }
     }
 
     public Rectangle2D getBoundingBox(double dx, double dy) {
@@ -101,6 +151,11 @@ public class Player {
 
     public void setVelX(double x) {
         setVelocity(x, velY);
+        if (x < 0) {
+            dir = -1;
+        } else if (x > 0) {
+            dir = 1;
+        }
     }
 
     public void setVelY(double y) {
@@ -117,10 +172,10 @@ public class Player {
 
     public void draw(Graphics g, double x, double y) {
 //        g.drawImage(playerTexture, (int) dxPx-5, (int) dyPx-5, null);
-        g.fillOval(
-                (int) x - PLAYER_RENDER_SIZE/2 - 1,
-                (int) y - PLAYER_RENDER_SIZE/2 - 1,
-                PLAYER_RENDER_SIZE,
-                PLAYER_RENDER_SIZE);
+        BufferedImage i = getTexture();
+        g.drawImage(i,
+                (int) x - i.getWidth()/2 - 1,
+                (int) y - i.getHeight()/2 - 1,
+                null);
     }
 }
