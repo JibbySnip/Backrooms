@@ -1,36 +1,34 @@
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.random.RandomGenerator;
 
 public class Level extends NullableGraph.Vertex {
-    // This can be changed to adjust how large rooms are, on average
-    private static final int DIM_MEAN = 30, DIM_STDEV = 4, DIM_MIN = 20;
-    private static final double EXIT_MEAN = 2, EXIT_STDEV=1, EXIT_MIN = 1;
-    private static final double CHEST_MEAN = 1.5, CHEST_STDEV=1, CHEST_MIN = 0;
-    private static final double COIN_MEAN = 1, COIN_STDEV=0, COIN_MIN = 1;
-    private static final double FINAL_EXIT_PROB = 0.02;
-
     public static final double NEW_EXIT_PROB = 0.1;
-    private static final List<Point> vonNeumannPoints = Arrays.asList(new Point(0, -1),
-            new Point(-1, 0),
-            new Point(1, 0),
-            new Point(0, 1));
-
     public static final double CAVE_FLOOR_PROB = 0.6;
     public static final int NUM_ITERATIONS = 3;
+    // This can be changed to adjust how large rooms are, on average
+    private static final int DIM_MEAN = 30, DIM_STDEV = 4, DIM_MIN = 20;
+    private static final double EXIT_MEAN = 2, EXIT_STDEV = 1, EXIT_MIN = 1;
+    private static final double CHEST_MEAN = 1.5, CHEST_STDEV = 1, CHEST_MIN = 0;
+    private static final double COIN_MEAN = 1, COIN_STDEV = 0, COIN_MIN = 1;
+    private static final double FINAL_EXIT_PROB = 0.02;
+    private static final List<Point> vonNeumannPoints =
+            Arrays.asList(new Point(0, -1), new Point(-1, 0), new Point(1, 0),
+                    new Point(0, 1));
+    private static final List<Tile> floorStyles =
+            Arrays.asList(TileImpl.woodTile, TileImpl.stoneTile);
     private final RandomGenerator ng;
+    private final Tile wallTile = TileImpl.voidTile;
+    private final List<Tile> chests = new LinkedList<>();
+    private final List<Point> doors = new LinkedList<>();
+    public int spawnX, spawnY;
+    public boolean hasFinalExit = false;
     private Tile[][] tileMap;
     private int w, h;
-    public int spawnX, spawnY;
     private Tile floorTile;
-    private final Tile wallTile = TileImpl.voidTile;
-    private static final List<Tile> floorStyles = Arrays.asList(TileImpl.woodTile, TileImpl.stoneTile);
-    private List<Tile> chests = new LinkedList<>();
-    private List<Point> doors = new LinkedList<>();
-    public boolean hasFinalExit = false;
 
     public Level(RandomGenerator ng, NullableGraph g) {
         super(g);
@@ -38,11 +36,15 @@ public class Level extends NullableGraph.Vertex {
         generate();
     }
 
+    public static boolean outOfBounds(Tile[][] tileMap, int xPos, int yPos) {
+        return xPos < 0 || xPos >= tileMap[0].length || yPos < 0 || yPos >= tileMap.length;
+    }
+
     /**
      * Generates the room. This is done in a couple of steps.
      * First, the room's dimensions are randomly chosen using a normal distribution.
      */
-    private void generate(){
+    private void generate() {
 
         while (w < DIM_MIN) {
             this.w = (int) ng.nextGaussian(DIM_MEAN, DIM_STDEV);
@@ -52,7 +54,7 @@ public class Level extends NullableGraph.Vertex {
         }
 
         int e = -1;
-        while ((e < EXIT_MIN && graph.freeEdgeCount() > 1 ) || e < 2) {
+        while ((e < EXIT_MIN && graph.freeEdgeCount() > 1) || e < 2) {
             e = (int) ng.nextGaussian(EXIT_MEAN, EXIT_STDEV);
         }
 
@@ -67,8 +69,8 @@ public class Level extends NullableGraph.Vertex {
 
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
-                tileMap[i][j] =
-                        ng.nextDouble(0,1) < CAVE_FLOOR_PROB ? floorTile : wallTile;
+                tileMap[i][j] = ng.nextDouble(0, 1) <
+                        CAVE_FLOOR_PROB ? floorTile : wallTile;
             }
         }
 
@@ -79,11 +81,13 @@ public class Level extends NullableGraph.Vertex {
             while (!foundExit) {
                 int x = ng.nextInt(0, w);
                 int y = ng.nextInt(0, h);
-                if (tileMap[y][x] == floorTile) { // TODO: 12/11/22 increase min edge generation if freeEdges <= 1
-                    if (ng.nextDouble(0,1) < FINAL_EXIT_PROB) {
+                if (tileMap[y][x] == floorTile) { // TODO: 12/11/22 increase min edge generation
+                    // if freeEdges <= 1
+                    if (ng.nextDouble(0, 1) < FINAL_EXIT_PROB) {
                         tileMap[y][x] = TileImpl.exitTile;
                         hasFinalExit = true;
-                    } else {
+                    }
+                    else {
                         doors.add(new Point(x, y));
                         tileMap[y][x] = TileImpl.getDoorTile(addEdge(), this);
                     }
@@ -99,7 +103,8 @@ public class Level extends NullableGraph.Vertex {
                 int y = ng.nextInt(0, h);
                 if (tileMap[y][x] == floorTile) {
 
-                    int nShekels = (int) Math.max(COIN_MIN, (int)Math.round(ng.nextGaussian(COIN_MEAN, COIN_STDEV)));
+                    int nShekels = (int) Math.max(COIN_MIN,
+                            (int) Math.round(ng.nextGaussian(COIN_MEAN, COIN_STDEV)));
 
                     Tile t = TileImpl.makeChestTile(nShekels);
                     chests.add(t);
@@ -111,7 +116,7 @@ public class Level extends NullableGraph.Vertex {
 
         Player collisionPlayer = new Player();
 
-        while (collision(collisionPlayer.getBoundingBox(0 ,0))) {
+        while (collision(collisionPlayer.getBoundingBox(0, 0))) {
             spawnX = ng.nextInt(0, w);
             spawnY = ng.nextInt(0, h);
             collisionPlayer.setPos(new Point2D.Double(spawnX, spawnY));
@@ -154,14 +159,16 @@ public class Level extends NullableGraph.Vertex {
         Set<Point> maxCave;
         if (maxCaveOpt.isPresent()) {
             maxCave = maxCaveOpt.get();
-        } else {
+        }
+        else {
             throw new RuntimeException("No largest cave");
         }
-        for (int i = 0; i < w; i ++) {
-            for (int j = 0; j< h; j++) {
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
                 if (maxCave.contains(new Point(i, j))) {
                     tileMap[j][i] = floorTile;
-                } else {
+                }
+                else {
                     tileMap[j][i] = wallTile;
                 }
             }
@@ -170,11 +177,12 @@ public class Level extends NullableGraph.Vertex {
 
     private void doAutomataIteration() {
         for (int i = 0; i < w; i++) {
-            for(int j = 0; j < h; j++) {
+            for (int j = 0; j < h; j++) {
                 int nNeighbors = mooreNumNeighbors(tileMap, i, j);
                 if (tileMap[j][i] == wallTile && nNeighbors < 3) {
                     tileMap[j][i] = floorTile;
-                } else if (tileMap[j][i] == floorTile && (nNeighbors > 4)) {
+                }
+                else if (tileMap[j][i] == floorTile && (nNeighbors > 4)) {
                     tileMap[j][i] = wallTile;
                 }
             }
@@ -199,7 +207,8 @@ public class Level extends NullableGraph.Vertex {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (!(i == 0 && j == 0) && (outOfBounds(tileMap, x+i, y+j) || tileMap[y+j][x+i] == wallTile)) {
+                if (!(i == 0 && j == 0) && (outOfBounds(tileMap, x + i, y + j) ||
+                        tileMap[y + j][x + i] == wallTile)) {
                     count++;
                 }
             }
@@ -208,15 +217,14 @@ public class Level extends NullableGraph.Vertex {
         return count;
     }
 
-
-
     public boolean collision(Rectangle2D bB) {
         if (bB.getMinX() < 0 || bB.getMaxX() >= w || bB.getMinY() < 0 || bB.getMaxY() >= h) {
             return true;
         }
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
-                if (tileMap[i][j].canCollide() && bB.intersects(new Rectangle2D.Double(j, i,1,1))) {
+                if (tileMap[i][j].canCollide() &&
+                        bB.intersects(new Rectangle2D.Double(j, i, 1, 1))) {
                     return true;
                 }
             }
@@ -236,10 +244,6 @@ public class Level extends NullableGraph.Vertex {
         }
     }
 
-    public static boolean outOfBounds(Tile[][] tileMap, int xPos, int yPos) {
-        return xPos < 0 || xPos >= tileMap[0].length || yPos < 0 || yPos >= tileMap.length;
-    }
-
     public Tile[][] getTileMap() {
         return tileMap;
     }
@@ -253,7 +257,8 @@ public class Level extends NullableGraph.Vertex {
         }
         if (freeEdges.size() == 0) {
             return null;
-        } else {
+        }
+        else {
             return freeEdges.get(ng.nextInt(freeEdges.size()));
         }
     }

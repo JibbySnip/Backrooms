@@ -1,13 +1,13 @@
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 public class BackroomsGame implements Runnable {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new BackroomsGame());
+    }
+
     @Override
     public void run() {
         JFrame frame = new JFrame("The Backrooms");
@@ -18,46 +18,64 @@ public class BackroomsGame implements Runnable {
 
         JButton instrBtn = new JButton("Instructions");
         topBar.add(instrBtn);
-        AtomicBoolean instrShown = new AtomicBoolean(false);
-        instrBtn.addActionListener(e -> {
-                if (!instrShown.get()) {
-                    instrShown.set(true);
-                    JFrame instrFrame = new JFrame("Instructions");
-                    instrFrame.add(new InstructionPanel());
-                    instrFrame.pack();
-                    instrFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    instrFrame.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            super.windowClosed(e);
-                            instrShown.set(false);
-                        }
-                    });
 
-                    instrFrame.setVisible(true);
-                }
-            }
-        );
         GamePanel g = new GamePanel();
+
         frame.setLayout(new BorderLayout());
         frame.add(topBar, BorderLayout.SOUTH);
         frame.add(g, BorderLayout.CENTER);
+
+        instrBtn.addActionListener(e -> {
+            JOptionPane.showMessageDialog(g,
+                    "<html><body> " + "<p style='width: 200px;'>In this game, you must " +
+                            "explore a series of ever-shifting caverns, finding " +
+                            "your way out before you run out of shekels. You must pay a shekel " +
+                            "at each door to unlock " +
+                            "it. Chests are hidden throughout the caverns, and you " +
+                            "can find more shekels in them. Make it to the rainbow door and " +
+                            "escape before you run out of " +
+                            "shekels and are trapped in the Backrooms forever. To navigate the " +
+                            "caverns, use the arrow " +
+                            "keys or WASD to move, and use the space bar to interact with chests" +
+                            " and doors. Good luck, brave " +
+                            "explorer!</p></body></html>", "The Backrooms", INFORMATION_MESSAGE,
+                    new ImageIcon("resources/player1.png"));
+
+            g.requestFocusInWindow();
+        });
+
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        g.requestFocusInWindow();
         g.start();
     }
 
-    class InstructionPanel extends JComponent {
+    class InstructionPanel extends JPanel {
         public InstructionPanel() {
-            setLayout(new GridLayout());
+            //            setLayout(new GridLayout(0, 1));
+            setLayout(new BorderLayout());
             JLabel title = new JLabel("Welcome to the Backrooms");
-            title.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 24));
-//            add(title, )
-        }
-    }
+            //            title.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 24));
+            add(title, BorderLayout.NORTH);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new BackroomsGame());
+            JLabel preamble = new JLabel(
+                    "<html><p>In this game, you must explore a series of ever-shifting caverns, " +
+                            "finding " +
+                            "your way out before you run out of shekels. You must pay a shekel " +
+                            "at each door to unlock " +
+                            "it. Chests are hidden throughout the caverns, and you " +
+                            "can find more shekels in them. Make it to the rainbow door and " +
+                            "escape before you run out of " +
+                            "shekels and are trapped in the Backrooms forever. To navigate the " +
+                            "caverns, use the arrow " +
+                            "keys or WASD to move, and use the space bar to interact with chests" +
+                            " and doors. Good luck, brave " +
+                            "explorer!</p></html>");
+
+            //            preamble.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+            add(preamble, BorderLayout.CENTER);
+
+        }
     }
 }

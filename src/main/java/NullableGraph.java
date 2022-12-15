@@ -30,7 +30,8 @@ public class NullableGraph {
             edges.remove(e2);
             freeEdges.remove(e1);
             freeEdges.remove(e2);
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Both edges must belong to the graph");
         }
         return e1;
@@ -45,7 +46,8 @@ public class NullableGraph {
         }
         if (nonEqualNullEdges.size() == 0) {
             return null;
-        } else {
+        }
+        else {
             return pickRandom(nonEqualNullEdges);
         }
     }
@@ -63,8 +65,8 @@ public class NullableGraph {
     }
 
     static class Vertex {
-        public Set<NullableEdge> edges = new HashSet<>();
         final NullableGraph graph;
+        public Set<NullableEdge> edges = new HashSet<>();
 
         public Vertex(NullableGraph g) {
             this.graph = g;
@@ -94,6 +96,7 @@ public class NullableGraph {
         public NullableEdge(Vertex v1) {
             this(v1, null);
         }
+
         public NullableEdge(Vertex v1, Vertex v2) {
             this.v1 = v1;
             this.v2 = v2;
@@ -104,7 +107,8 @@ public class NullableGraph {
                 v2 = e2.v1;
                 v2.edges.remove(e2);
                 v2.edges.add(this);
-            } else {
+            }
+            else {
                 throw new IllegalStateException("Edge is already merged.");
             }
         }
@@ -121,7 +125,8 @@ public class NullableGraph {
             assert v1 == v || v2 == v;
             if (v1 != v) {
                 return v1;
-            } else {
+            }
+            else {
                 return v2;
             }
         }

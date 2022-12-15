@@ -20,6 +20,7 @@ public class GamePanel extends JComponent {
 
     private boolean gameWon = false;
     private boolean gameLost = false;
+
     public GamePanel() {
 
 
@@ -34,7 +35,7 @@ public class GamePanel extends JComponent {
                     case KeyEvent.VK_UP, KeyEvent.VK_W -> p.setVelY(-Player.VEL_MAX);
                     case KeyEvent.VK_DOWN, KeyEvent.VK_S -> p.setVelY(Player.VEL_MAX);
                     case KeyEvent.VK_SPACE -> interact();
-//                    case KeyEvent.VK_P -> changeLevelDebug();
+                    //                    case KeyEvent.VK_P -> changeLevelDebug();
                 }
             }
 
@@ -42,8 +43,10 @@ public class GamePanel extends JComponent {
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_A, KeyEvent.VK_D -> p.setVelX(0);
-                    case KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_S, KeyEvent.VK_W -> p.setVelY(0);
+                    case KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_A, KeyEvent.VK_D ->
+                            p.setVelX(0);
+                    case KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_S, KeyEvent.VK_W ->
+                            p.setVelY(0);
                 }
             }
         });
@@ -78,16 +81,15 @@ public class GamePanel extends JComponent {
     }
 
     private void interact() {
-        Tile t = currLevel.getTileMap()
-                [(int) Math.floor(p.getPos().getY())]
-                [(int) Math.floor(p.getPos().getX())];
+        Tile t = currLevel.getTileMap()[(int) Math.floor(p.getPos().getY())][(int) Math.floor(
+                p.getPos().getX())];
 
         if (nShekels + t.shekelCount() < 0) {
             return;
         }
         InteractResult i = t.interact();
         // TODO: 12/6/2022 Add soft lock protection
-//        System.out.println("interacting...");
+        //        System.out.println("interacting...");
 
         nShekels += i.shekelsGained();
         if (i.shekelsGained() > 0) {
@@ -98,54 +100,53 @@ public class GamePanel extends JComponent {
         }
 
         if (i.exitTaken() != null) {
-//            System.out.println("Found an exit");
+            //            System.out.println("Found an exit");
             if (i.exitTaken().hasNullEnd()) {
                 NullableGraph.NullableEdge nextL = levels.findNullEdge(i.exitTaken());
-                if (
-                        nextL == null ||
-                        levels.freeEdgeCount() < 3 ||
-                        r.nextDouble(0, 1) > Level.NEW_EXIT_PROB*levels.freeEdgeCount()
-                    ) { //
+                if (nextL == null || levels.freeEdgeCount() < 3 ||
+                        r.nextDouble(0, 1) > Level.NEW_EXIT_PROB *
+                                levels.freeEdgeCount()) { //
                     // Make a new room with an exit
                     Level l = newLevel();
                     NullableGraph.NullableEdge e0 = l.getRandomUnassignedEdge();
                     l.reassignEdge(e0, levels.mergeEdges(i.exitTaken(), e0));
                     currLevel = l;
-                } else {
+                }
+                else {
                     // Connect to an existing room
                     NullableGraph.NullableEdge e = levels.mergeEdges(i.exitTaken(), nextL);
                     ((Level) e.oppositeEnd(i.originRoom())).reassignEdge(nextL, e);
                     currLevel = (Level) e.oppositeEnd(i.originRoom());
 
                 }
-            } else {
+            }
+            else {
                 currLevel = (Level) i.exitTaken().oppositeEnd(i.originRoom());
             }
             Point2D spawnPos = currLevel.findExitCoords(i.exitTaken());
             spawnPos.setLocation(
-                    spawnPos.getX() + (p.getPos().getX()-Math.floor(p.getPos().getX())),
-                    spawnPos.getY() + (p.getPos().getY()-Math.floor(p.getPos().getY()))
-            );
+                    spawnPos.getX() + (p.getPos().getX() - Math.floor(p.getPos().getX())),
+                    spawnPos.getY() + (p.getPos().getY() - Math.floor(p.getPos().getY())));
             p.setLevel(currLevel, spawnPos);
 
             double xPos = p.getPos().getX();
             double yPos = p.getPos().getY();
-            double xOff = 2*Math.floor(p.getPos().getX()) - 2*xPos + 1;
-            double yOff = 2*Math.floor(p.getPos().getY()) - 2*yPos + 1;
+            double xOff = 2 * Math.floor(p.getPos().getX()) - 2 * xPos + 1;
+            double yOff = 2 * Math.floor(p.getPos().getY()) - 2 * yPos + 1;
             boolean foundOffset = false;
             for (int k = 0; k < 4; k++) {
-                if (!currLevel.collision(p.getBoundingBox(xOff * (k % 2), yOff * Math.floorDiv(k, 2)))) {
-                    p.setPos(new Point2D.Double(xPos + (k % 2)*xOff, yPos + Math.floorDiv(k, 2)*yOff));
+                if (!currLevel.collision(
+                        p.getBoundingBox(xOff * (k % 2), yOff * Math.floorDiv(k, 2)))) {
+                    p.setPos(new Point2D.Double(xPos + (k % 2) * xOff,
+                            yPos + Math.floorDiv(k, 2) * yOff));
                     foundOffset = true;
                     break;
                 }
             }
             if (!foundOffset) {
                 System.out.println("Couldn't find safe corner");
-                p.setPos(new Point2D.Double(
-                        Math.floor(p.getPos().getX()) + 0.5,
-                        Math.floor(p.getPos().getY()) + 0.5
-                ));
+                p.setPos(new Point2D.Double(Math.floor(p.getPos().getX()) + 0.5,
+                        Math.floor(p.getPos().getY()) + 0.5));
             }
 
 
@@ -166,14 +167,17 @@ public class GamePanel extends JComponent {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.BLACK);
-            g.drawString("YOU RAN OUT OF SHEKELS... YOU LOSE!", getWidth()/2-64, getHeight()/2);
+            g.drawString("YOU RAN OUT OF SHEKELS... YOU LOSE!", getWidth() / 2 - 64,
+                    getHeight() / 2);
 
-        } else if (gameWon) {
+        }
+        else if (gameWon) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.BLACK);
-            g.drawString("YOU WIN!", getWidth()/2-44, getHeight()/2);
-        } else {
+            g.drawString("YOU WIN!", getWidth() / 2 - 44, getHeight() / 2);
+        }
+        else {
             int posPxX = (int) Math.round(p.getPos().getX() * Tile.TILE_DIM);
             int posPxY = (int) Math.round(p.getPos().getY() * Tile.TILE_DIM);
 
@@ -187,25 +191,30 @@ public class GamePanel extends JComponent {
             int yMax = (int) Math.ceil((posPxY + dyPx) / Tile.TILE_DIM);
             if (currLevel != null) {
                 Tile[][] tileMap = currLevel.getTileMap();
-                BufferedImage b = new BufferedImage(viewportSize.width, viewportSize.height, BufferedImage.TYPE_INT_RGB);
+                BufferedImage b = new BufferedImage(viewportSize.width, viewportSize.height,
+                        BufferedImage.TYPE_INT_RGB);
                 // Iterating over tile coordinates in tileMap
                 for (int i = yMin; i < yMax; i++) {
                     for (int j = xMin; j < xMax; j++) {
                         Tile tileToFill;
                         if (Level.outOfBounds(tileMap, j, i)) {
                             tileToFill = TileImpl.voidTile;
-                        } else {
+                        }
+                        else {
                             tileToFill = tileMap[i][j];
                         }
                         for (int x = 0; x < Tile.TILE_DIM; x++) {
                             for (int y = 0; y < Tile.TILE_DIM; y++) {
-                                int pixelCoordX = j * Tile.TILE_DIM - (int) Math.floor(posPxX - dxPx) + x;
-                                int pixelCoordY = i * Tile.TILE_DIM - (int) Math.floor(posPxY - dyPx) + y;
-                                //                        if (Math.abs(posPxX - pixelCoordX) <= dxPx && Math.abs(posPxY - pixelCoordY) <= dyPx) {
-                                if (pixelCoordX > 0 && pixelCoordX < getWidth() && pixelCoordY > 0 && pixelCoordY < getHeight()) {
-                                    b.setRGB(
-                                            pixelCoordX,
-                                            pixelCoordY,
+                                int pixelCoordX =
+                                        j * Tile.TILE_DIM - (int) Math.floor(posPxX - dxPx) + x;
+                                int pixelCoordY =
+                                        i * Tile.TILE_DIM - (int) Math.floor(posPxY - dyPx) + y;
+                                //                        if (Math.abs(posPxX - pixelCoordX) <=
+                                //                        dxPx && Math.abs(posPxY - pixelCoordY)
+                                //                        <= dyPx) {
+                                if (pixelCoordX > 0 && pixelCoordX < getWidth() &&
+                                        pixelCoordY > 0 && pixelCoordY < getHeight()) {
+                                    b.setRGB(pixelCoordX, pixelCoordY,
                                             tileToFill.getGraphics().getRGB(x, y));
                                 }
                             }
@@ -218,11 +227,11 @@ public class GamePanel extends JComponent {
                 p.draw(g, dxPx, dyPx);
                 g.setFont(g.getFont().deriveFont(30.0F));
                 g.setColor(Color.YELLOW);
-                g.drawString("Shekels: "+ nShekels, 10, 30);
+                g.drawString("Shekels: " + nShekels, 10, 30);
             }
         }
 
-//        debugImage(g);
+        //        debugImage(g);
 
     }
 
@@ -234,12 +243,10 @@ public class GamePanel extends JComponent {
         g.drawString("PosX = " + p.getPos().getX(), 10, 20);
         g.drawString("PosY = " + p.getPos().getY(), 10, 40);
         Rectangle2D r = p.getBoundingBox(0, 0);
-        g.drawRect(
-                (int) (getWidth() / 2 - r.getWidth() * 4),
+        g.drawRect((int) (getWidth() / 2 - r.getWidth() * 4),
                 (int) (getHeight() / 2 - r.getHeight() * 4),
                 (int) r.getWidth() * Tile.TILE_DIM,
-                (int) r.getHeight() * Tile.TILE_DIM
-        );
+                (int) r.getHeight() * Tile.TILE_DIM);
     }
 
     @Override

@@ -8,18 +8,17 @@ import java.io.File;
 import java.io.IOException;
 
 public class Player {
+    public static final double BOUND_X = 0.8, BOUND_Y = 0.8;
+    public static final double VEL_MAX = 0.6;
+    private static final int COLLISION_SUBELEMS = 5;
+    private final BufferedImage playerTextureLeft1, playerTextureLeft2, playerTextureRight1,
+            playerTextureRight2;
     private Point2D pos = new Point2D.Double(-1, -1);
     private double velX, velY;
-
-    public static final double BOUND_X = 0.8, BOUND_Y = 0.8;
-    public static final double VEL_MAX=0.6;
-    private static final int COLLISION_SUBELEMS = 5;
     private Level level;
     private int animCount = 0;
-
-    private int animCycle = 8;
+    private final int animCycle = 8;
     private int dir = -1;
-    private final BufferedImage playerTextureLeft1,playerTextureLeft2,playerTextureRight1,playerTextureRight2;
 
     public Player() {
         try {
@@ -38,14 +37,11 @@ public class Player {
         flip.concatenate(AffineTransform.getScaleInstance(-1, 1));
         flip.concatenate(AffineTransform.getTranslateInstance(-playerTextureLeft1.getWidth(), 0));
 
-        BufferedImage img = new BufferedImage(
-                i.getWidth(),
-                i.getHeight(),
-                BufferedImage.TYPE_INT_ARGB
-        );
+        BufferedImage img =
+                new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
         g.transform(flip);
-        g.drawImage(i, 0,0, null);
+        g.drawImage(i, 0, 0, null);
         return img;
     }
 
@@ -71,15 +67,13 @@ public class Player {
             double last_dy = 0;
             while (count <= COLLISION_SUBELEMS) {
 
-                if (level.collision(getBoundingBox(
-                        (count * dx) /  COLLISION_SUBELEMS,
-                        (count * dy) / COLLISION_SUBELEMS
-                        )
-                )) {
+                if (level.collision(getBoundingBox((count * dx) / COLLISION_SUBELEMS,
+                        (count * dy) / COLLISION_SUBELEMS))) {
                     dx = last_dx;
                     dy = last_dy;
                     break;
-                } else {
+                }
+                else {
                     last_dx = (count * dx) / COLLISION_SUBELEMS;
                     last_dy = (count * dy) / COLLISION_SUBELEMS;
                 }
@@ -89,15 +83,8 @@ public class Player {
         transformPos(dx, dy);
     }
 
-    public void setPos(Point2D pos) {
-        this.pos = pos;
-    }
-
     private void transformPos(double dx, double dy) {
-        this.pos = new Point2D.Double(
-                this.pos.getX()+dx,
-                this.pos.getY()+dy
-        );
+        this.pos = new Point2D.Double(this.pos.getX() + dx, this.pos.getY() + dy);
     }
 
     public void setLevel(Level l) {
@@ -115,32 +102,35 @@ public class Player {
         if (velX == 0 && velY == 0 || animCount == animCycle) {
             animCount = 0;
         }
-        if (animCount % animCycle > animCycle/2 || animCount % animCycle == 0) {
+        if (animCount % animCycle > animCycle / 2 || animCount % animCycle == 0) {
             if (dir < 0) {
                 return playerTextureLeft1;
-            } else {
+            }
+            else {
                 return playerTextureRight1;
             }
-        } else {
+        }
+        else {
             if (dir < 0) {
                 return playerTextureLeft2;
-            } else {
+            }
+            else {
                 return playerTextureRight2;
             }
         }
     }
 
     public Rectangle2D getBoundingBox(double dx, double dy) {
-        return new Rectangle2D.Double(
-             (pos.getX() - BOUND_X/2 + dx),
-             (pos.getY()  - BOUND_Y/2+ dy),
-            BOUND_X,
-            BOUND_Y
-        );
+        return new Rectangle2D.Double((pos.getX() - BOUND_X / 2 + dx),
+                (pos.getY() - BOUND_Y / 2 + dy), BOUND_X, BOUND_Y);
     }
 
     public Point2D getPos() {
         return pos;
+    }
+
+    public void setPos(Point2D pos) {
+        this.pos = pos;
     }
 
     public void setVelocity(double x, double y) {
@@ -149,33 +139,32 @@ public class Player {
         this.velY = y;
     }
 
+    public double getVelX() {
+        return velX;
+    }
+
     public void setVelX(double x) {
         setVelocity(x, velY);
         if (x < 0) {
             dir = -1;
-        } else if (x > 0) {
+        }
+        else if (x > 0) {
             dir = 1;
         }
-    }
-
-    public void setVelY(double y) {
-        setVelocity(velX, y);
-    }
-
-    public double getVelX() {
-        return velX;
     }
 
     public double getVelY() {
         return velY;
     }
 
+    public void setVelY(double y) {
+        setVelocity(velX, y);
+    }
+
     public void draw(Graphics g, double x, double y) {
-//        g.drawImage(playerTexture, (int) dxPx-5, (int) dyPx-5, null);
+        //        g.drawImage(playerTexture, (int) dxPx-5, (int) dyPx-5, null);
         BufferedImage i = getTexture();
-        g.drawImage(i,
-                (int) x - i.getWidth()/2 - 1,
-                (int) y - i.getHeight()/2 - 1,
+        g.drawImage(i, (int) x - i.getWidth() / 2 - 1, (int) y - i.getHeight() / 2 - 1,
                 null);
     }
 }
