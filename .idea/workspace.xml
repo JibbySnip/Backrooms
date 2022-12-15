@@ -7,20 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Nearly done, just instructions left">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+    <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Final version for cis 1200">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/BackroomsGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BackroomsGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/InteractResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/InteractResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NullableGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NullableGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TileImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TileImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +57,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "run.code.analysis.last.selected.profile": "pProject Default",
@@ -143,7 +131,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670873363233</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Final version for cis 1200">
+      <created>1671138404523</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1671138404523</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,7 +158,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Inter-room travel complete" />
     <MESSAGE value="Nearly done, just instructions left" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nearly done, just instructions left" />
+    <MESSAGE value="Final version for cis 1200" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final version for cis 1200" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
