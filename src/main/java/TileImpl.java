@@ -3,19 +3,20 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TileImpl implements Tile {
     private static final InteractResult nothing = new InteractResult(0, null,
             null, false);
-    private final static Tile openChestTile = new TileImpl("resources/openChest.png",
+    private final static Tile openChestTile = new TileImpl("textures/openChest.png",
             false);
-    private static final Tile unlockedTrapdoor = new TileImpl("resources/openTrapdoor.png",
+    private static final Tile unlockedTrapdoor = new TileImpl("textures/openTrapdoor.png",
             false);
     public static Tile voidTile = new TileImpl(makeSolidImage(Color.BLACK), true);
-    public static Tile stoneTile = new TileImpl("resources/stone.png", false);
-    public static Tile woodTile = new TileImpl("resources/wood.png", false);
+    public static Tile stoneTile = new TileImpl("textures/stone.png", false);
+    public static Tile woodTile = new TileImpl("textures/wood.png", false);
     public static Tile exitTile =
-            new TileImpl("resources/exit.png", new InteractResult(0,
+            new TileImpl("textures/exit.png", new InteractResult(0,
                     null, null, true), false);
     public boolean canCollide;
     InteractResult interact;
@@ -34,7 +35,7 @@ public class TileImpl implements Tile {
 
     public TileImpl(String filePath, boolean canCollide) {
         try {
-            BufferedImage i = ImageIO.read(new File(filePath));
+            BufferedImage i = loadImg(filePath);
             init(i, nothing, canCollide);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -43,7 +44,7 @@ public class TileImpl implements Tile {
 
     public TileImpl(String filePath, InteractResult interact, boolean canCollide) {
         try {
-            BufferedImage i = ImageIO.read(new File(filePath));
+            BufferedImage i = loadImg(filePath);
             init(i, interact, canCollide);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -63,7 +64,7 @@ public class TileImpl implements Tile {
     }
 
     public static Tile makeChestTile(int numShekels) {
-        return new TileImpl("resources/closedChest.png", new InteractResult(1,
+        return new TileImpl("textures/closedChest.png", new InteractResult(numShekels,
                 null, null, false),
                 false) {
             private boolean isOpen = false;
@@ -91,8 +92,13 @@ public class TileImpl implements Tile {
         };
     }
 
+    public static BufferedImage loadImg(String fp) throws IOException {
+        return ImageIO.read(Objects.requireNonNull(TileImpl.class.getResource(fp)));
+
+    }
+
     public static Tile getDoorTile(NullableGraph.NullableEdge e, NullableGraph.Vertex v) {
-        return new TileImpl("resources/trapdoor.png", new InteractResult(-1,
+        return new TileImpl("textures/trapdoor.png", new InteractResult(-1,
                 e, v, false), false) {
             private boolean isLocked = true;
 

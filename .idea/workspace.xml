@@ -3,12 +3,30 @@
   <component name="AnalysisUIOptions">
     <option name="ANALYZE_INJECTED_CODE" value="false" />
   </component>
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Backrooms:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Final version for cis 1200">
+    <list default="true" id="9499f516-6c0a-4283-9dcc-8136b859d43a" name="Changes" comment="Made executable jar">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Backrooms_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Backrooms_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Backrooms_jar/Backrooms.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/closedChest.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/closedChest.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/exit.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/exit.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/openChest.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/openChest.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/openTrapdoor.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/openTrapdoor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/player1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/player1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/player2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/player2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/stone.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/stone.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/trapdoor.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/trapdoor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/wood.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/textures/wood.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TileImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TileImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,9 +75,9 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "preferences.sourceCode.Java",
     "vue.rearranger.settings.migration": "true"
@@ -76,12 +94,14 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/resources/textures" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/resources" />
       <recent name="D:\Programs\Coursework\CIS 1200\Backrooms" />
-      <recent name="D:\Programs\Coursework\CIS 1200\Backrooms\src" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Game">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -100,6 +120,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BackroomsJar" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Backrooms_jar/Backrooms.jar" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Game" />
+      <item itemvalue="JAR Application.BackroomsJar" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -138,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671138404523</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Made executable jar">
+      <created>1671138600322</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1671138600322</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,7 +195,8 @@
     <MESSAGE value="Inter-room travel complete" />
     <MESSAGE value="Nearly done, just instructions left" />
     <MESSAGE value="Final version for cis 1200" />
-    <option name="LAST_COMMIT_MESSAGE" value="Final version for cis 1200" />
+    <MESSAGE value="Made executable jar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made executable jar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

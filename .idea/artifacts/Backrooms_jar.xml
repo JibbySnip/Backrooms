@@ -1,8 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Backrooms:jar">
+  <artifact type="jar" build-on-make="true" name="Backrooms:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Backrooms_jar</output-path>
     <root id="archive" name="Backrooms.jar">
       <element id="module-output" name="Backrooms" />
+      <element id="directory" name="resources">
+        <element id="dir-copy" path="$PROJECT_DIR$/src/resources" />
+      </element>
     </root>
   </artifact>
 </component>

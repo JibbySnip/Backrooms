@@ -22,12 +22,12 @@ public class Player {
 
     public Player() {
         try {
-            playerTextureLeft1 = ImageIO.read(new File("resources/player1.png"));
-            playerTextureLeft2 = ImageIO.read(new File("resources/player2.png"));
+            playerTextureLeft1 = TileImpl.loadImg("textures/player1.png");
+            playerTextureLeft2 = TileImpl.loadImg("textures/player2.png");
             playerTextureRight1 = flipImg(playerTextureLeft1);
 
             playerTextureRight2 = flipImg(playerTextureLeft2);
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new RuntimeException(e);
         }
     }
