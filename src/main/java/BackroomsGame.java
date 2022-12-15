@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
@@ -10,8 +12,27 @@ public class BackroomsGame implements Runnable {
 
     @Override
     public void run() {
-        JFrame frame = new JFrame("The Backrooms");
+        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+        final URL imageResource = getClass().getResource("textures/player1.png");
+        final Image image = defaultToolkit.getImage(imageResource);
 
+        //this is new since JDK 9
+        final Taskbar taskbar = Taskbar.getTaskbar();
+
+        try {
+            //set icon for mac os (and other systems which do support this method)
+            taskbar.setIconImage(image);
+        } catch (final UnsupportedOperationException e) {
+            System.out.println("The os does not support: 'taskbar.setIconImage'");
+        } catch (final SecurityException e) {
+            System.out.println("There was a security exception for: 'taskbar.setIconImage'");
+        }
+        JFrame frame = new JFrame("The Backrooms");
+        //loading an image from a file
+
+
+        //set icon for windows os (and other systems which do support this method)
+        frame.setIconImage(image);
         JPanel topBar = new JPanel();
         topBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         topBar.setLayout(new GridLayout(1, 5));
